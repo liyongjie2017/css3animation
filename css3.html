@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		div{
+			width: 800px;
+			/*height: 800px;*/
+			margin: 100px auto;
+			perspective:800px;
+		}
+		img{
+			float: left;
+			width: 80px;
+			height: 80px;
+		}
+		button{
+			display: block;
+			width: 100px;
+			margin: 50px auto;
+			font:12px/16px '微软雅黑';
+			text-align: center;
+			background-color: rgb(100,0,0);
+			padding: 0 20px;
+			border-radius: 5px;
+			box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+		}
+		.clearfix:after{
+			content: "";
+			clear: both;
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<div class="clearfix">
+		<img src="images/1.jpg" alt="">
+		<img src="images/2.jpg" alt="">
+		<img src="images/3.jpg" alt="">
+		<img src="images/4.jpg" alt="">
+		<img src="images/5.jpg" alt="">
+		<img src="images/6.jpg" alt="">
+		<img src="images/1.jpg" alt="">
+		<img src="images/2.jpg" alt="">
+		<img src="images/3.jpg" alt="">
+		<img src="images/4.jpg" alt="">
+		<img src="images/5.jpg" alt="">
+		<img src="images/6.jpg" alt="">
+		<img src="images/1.jpg" alt="">
+		<img src="images/2.jpg" alt="">
+		<img src="images/3.jpg" alt="">
+		<img src="images/4.jpg" alt="">
+		<img src="images/5.jpg" alt="">
+		<img src="images/6.jpg" alt="">
+		<img src="images/1.jpg" alt="">
+		<img src="images/2.jpg" alt="">
+		<img src="images/3.jpg" alt="">
+		<img src="images/4.jpg" alt="">
+		<img src="images/5.jpg" alt="">
+		<img src="images/6.jpg" alt="">
+		<img src="images/1.jpg" alt="">
+		<img src="images/2.jpg" alt="">
+		<img src="images/3.jpg" alt="">
+		<img src="images/4.jpg" alt="">
+		<img src="images/5.jpg" alt="">
+		<img src="images/6.jpg" alt="">
+		
+		<!-- <a href="">点击查看效果</a> -->
+	</div>
+	<button>点击查看效果</button>
+	<script>
+		btn=document.querySelector('button');
+		imgs=document.querySelectorAll('img');
+		var on=true;
+		btn.onclick=function(){
+			if(!on){
+				return;
+			};
+			on=false;
+			var endNum=0;
+			var end=0;
+			for(var i=0;i<imgs.length;i++){
+				// imgs[i].style.transition = '1s';
+				
+				(function(i){
+					setTimeout(function(){		
+						moveFn(imgs[i],'2s',function(){
+							imgs[i].style.transform = 'scale(0.01)';
+						},function(){
+							moveFn(this,'1s',function(){
+								this.style.transform = 'scale(1)';
+								this.style.opacity = 0;
+							},function(){
+								endNum++;
+								if(endNum==imgs.length){
+									toBig();
+								}
+							})
+						});
+					},Math.random()*1000)
+									
+				})(i)
+				function toBig(){
+					for(var i=0;i<imgs.length;i++){
+						
+						imgs[i].style.transition = '';
+						// imgs[i].style.opacity = 1;
+						imgs[i].style.transform = 'rotateY(0deg) translateZ(-'+Math.random()*500+'px)';
+						(function(i){
+							setTimeout(function(){
+								moveFn(imgs[i],'2s',function(){
+									imgs[i].style.opacity = 1;
+									imgs[i].style.transform = 'rotateY(-360deg) translateZ(0)';
+								},function(){
+									end++;
+									if(end==imgs.length){
+										on=true;
+									}
+								})
+							},Math.random()*1000)
+						})(i)
+					}
+				}
+				
+			}
+		}
+		function moveFn(obj,time,doFn,callback){
+			obj.style.transition = time;
+			doFn.call(obj);
+			var called=false;
+			obj.addEventListener('transitionend',function(){
+				if(!called){
+					callback&&callback.call(obj);
+					called=true;
+				}
+					
+			},false) 
+		}
+	</script>
+</body>
+</html>

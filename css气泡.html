@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		img{
+			width:300px;
+			height: 400px;
+			vertical-align: middle;
+		}
+		#canvas{
+			background-color: #000;
+		}
+		#nav{
+			width: 300px;
+			height: 400px;
+			position: absolute;
+			left:0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+		}
+		#nav li{
+			position: absolute;
+			left: 0;
+			top:0;
+			list-style: none;
+			transform-origin:25px 375px;
+			box-shadow: 2px 2px 5px #000;
+			transition:1s;
+		}
+	</style>
+</head>
+<body>
+	<canvas id='canvas'></canvas>
+	<ul id='nav'>
+		<li><img src="images/1.jpg" alt=""></li>
+		<li><img src="images/2.jpg" alt=""></li>
+		<li><img src="images/3.jpg" alt=""></li>
+		<li><img src="images/4.jpg" alt=""></li>
+		<li><img src="images/5.jpg" alt=""></li>
+		<li><img src="images/6.jpg" alt=""></li>
+		<li><img src="images/1.jpg" alt=""></li>
+		<li><img src="images/2.jpg" alt=""></li>
+		<li><img src="images/3.jpg" alt=""></li>
+		<li><img src="images/4.jpg" alt=""></li>
+		<li><img src="images/5.jpg" alt=""></li>
+		<li><img src="images/6.jpg" alt=""></li>
+	</ul>
+	<script>
+		//扇形效果
+		var nav=document.querySelector('ul');
+		var lis=document.querySelectorAll('li');
+		var canvas=document.querySelector("canvas");
+		canvas.width=window.innerWidth;
+		canvas.height=window.innerHeight+400;
+		var context=canvas.getContext('2d');
+		var clicked=true;
+		var colors=['red','blue','yellow','pink','black','white'];
+		var balls=[];
+		var on=true;
+		var timer;
+		lis[lis.length-1].onclick=function(){
+			
+			for(var i=0;i<lis.length;i++){
+				var n=i-lis.length/2;
+				if(clicked){
+					n=n*15;
+				}else {
+					n=360;
+				}
+				
+				lis[i].style.transform = 'rotateZ('+n+'deg)';
+				
+			}
+			clicked=!clicked;
+		}
+		for(var i=0;i<lis.length-1;i++){
+			lis[i].index=i;
+			lis[i].onclick=function(){
+				 var leftDeg=0;
+				 var rightDeg=90;
+				 this.style.transform = 'rotateZ(0deg)'
+				 for(var j=this.index-1;j>=0;j--){
+				 	leftDeg-=15;
+				 	lis[j].style.transform = 'rotateZ('+leftDeg+'deg)';
+				 }
+				 for(var j=this.index+1;j<lis.length;j++){
+					rightDeg+=15;
+					lis[j].style.transform = 'rotateZ('+rightDeg+'deg)';
+				 }
+			}
+		}
+		//在canvas上花圆
+		function draw(ball){
+			context.beginPath();//开始的路径
+			//arc(x轴的位置，Y轴的位置，半径，起始弧度，结束弧度)
+			context.arc(ball.x,ball.y,ball.r,0,Math.PI*2)
+			context.fillStyle=ball.color;
+			context.fill();
+		}
+		//x ~ y : Math.round(Math.random()*(y-x) + x)
+		function random(min,max){
+			return Math.round(Math.random()*(max-min+min))
+		}
+		canvas.onmousemove=function(ev){
+			for(var i=0;i<2;i++){
+				var ball={
+					x:random(-5,5)+ev.clientX,
+					y:random(-5,5)+ev.clientY+window.pageYOffset,
+					r:random(10,45),
+					vx:Math.random()-0.5,
+					vy:Math.random()-0.5,
+					color:colors[random(0,colors.length-1)]
+				}
+				balls.push(ball);
+				if(balls.length>300){
+					balls.shift();
+				}
+			}
+			if(on){
+				clearInterval(timer);
+				timer=setInterval(drallBall,30);
+				on=false;
+			}
+			function drallBall(){
+				context.clearRect(0,0,canvas.width,canvas.height);
+				for(var i=0;i<balls.length;i++){
+					balls[i].x+=balls[i].vx*8;
+					balls[i].y+=balls[i].vy*8;
+					balls[i].r=balls[i].r*0.94;
+					balls[i].index=i;
+					if(balls[i].r<1){
+						balls.splice(balls[i].index,1);
+						continue;
+					}
+					draw(balls[i]);
+
+				}
+				console.log(1)
+				if(!balls.length){
+						clearInterval(timer)
+					}
+				on=true;
+			}
+		}
+	</script>
+</body>
+</html>
