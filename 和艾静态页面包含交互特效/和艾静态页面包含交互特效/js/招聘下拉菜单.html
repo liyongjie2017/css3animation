@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.selectgroup{width: 200px;}
+	    dt{border:1px solid #00f;margin: 10px 0 20px 0;padding: 5px;}
+		dd{margin:0;}
+		dd div{padding: 5px 0;}
+		.yellow{background:#ff0;}
+		dt em{background: #f00;width:20px;height:20px;display:inline-block;vertical-align:middle;}
+		.emchange{background:#ff0;}
+	</style>
+	<script type="text/javascript" src="./jquery.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("dt").bind("click",function(){
+				$(this).next("dd").toggle();
+				$(this).children("em").toggleClass("emchange")
+			});
+			$("dd div").bind("click",function(){
+				$(this).siblings("div").removeClass("yellow");
+				$(this).addClass("yellow");
+			})
+		})
+	</script>
+</head>
+<body>
+	<div id="options" class="selectgroup">
+		<dl class="">
+			<dt>月薪范围<em></em></dt>
+			<dd>
+				<div>2k以下</div>
+				<div>2k-5k</div>
+				<div>5k-10k</div>
+				<div>10k-15k</div>
+				<div>15k-25k</div>
+				<div>25k-50k</div>
+				<div>50k以上</div>
+			</dd>
+		</dl>
+		<dl>
+			<dt>工作经验 <em></em></dt>
+			<dd>
+				<div>不限</div>
+				<div>应届毕业生</div>
+				<div>1年以下</div>
+				<div>1-3年</div>
+				<div>3-5年</div>
+				<div>5-10年</div>
+				<div>10年以上</div>
+			</dd>
+		</dl>
+		<dl>
+			<dt>最低学历 <em></em></dt>
+			<dd>
+				<div>不限</div>
+				<div>大专</div>
+				<div>本科</div>
+				<div>硕士</div>
+				<div>博士</div>
+			</dd>
+		</dl>
+		<dl>
+			<dt>工作性质 <em></em></dt>
+			<dd>
+				<div>全职</div>
+				<div>兼职</div>
+				<div>实习</div>
+			</dd>
+		</dl>
+	</div>
+</body>
+</html>
